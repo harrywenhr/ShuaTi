@@ -47,9 +47,9 @@ class Solution:
                 #we pick one element, reset the target and continue our recusive run
                 if i == leftI or nums[i] > nums[i - 1]:
                     #append returns value none
-                    #result.append(nums[i])
-                    #currentResult = result + [nums[i]]
-                    findNSum(i + 1, rightI, N - 1, target - nums[i], result + [nums[i]], results)
+                    #Need to pass a copy of result
+                    currentResult = result + [nums[i]]
+                    findNSum(i + 1, rightI, N - 1, target - nums[i], currentResult, results)
         nums.sort()
         results = []
         findNSum(0, len(nums) - 1, 4, target, [], results)
