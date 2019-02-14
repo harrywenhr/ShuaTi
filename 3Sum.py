@@ -1,16 +1,16 @@
-1. Sort all element of array
-2. Run loop from i=0 to n-2.
-     Initialize two index variables l=i+1 and r=n-1
-4. while (l < r) 
-     Check sum of arr[i], arr[l], arr[r] is
-     zero or not if sum is zero then print the
-     triplet and do l++ and r--.
-     if the number is the same as the number before, we have used it as target already, continue.
-     we need to move the left and right pointers to the next different numbers, so we do not get repeating result.
+# 1. Sort all element of array
+# 2. Run loop from i=0 to n-2.
+#      Initialize two index variables l=i+1 and r=n-1
+# 4. while (l < r) 
+#      Check sum of arr[i], arr[l], arr[r] is
+#      zero or not if sum is zero then print the
+#      triplet and do l++ and r--.
+#      if the number is the same as the number before, we have used it as target already, continue.
+#      we need to move the left and right pointers to the next different numbers, so we do not get repeating result.
 
-5. If sum is less than zero then l++
-6. If sum is greater than zero then r--
-7. If not exist in array then print not found.
+# 5. If sum is less than zero then l++
+# 6. If sum is greater than zero then r--
+# 7. If not exist in array then print not found.
 #[-4,-1,-1,0,1,2]
 class Solution:
     def threeSum(self, nums: 'List[int]') -> 'List[List[int]]':
