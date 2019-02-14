@@ -6,6 +6,7 @@
 # new target = target - x
 # find 
 # a + b + c = newTarget  its a 3sum problem now
+# we keep going till its a 2 sum problem
 
 
 class Solution:
