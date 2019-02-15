@@ -1,4 +1,4 @@
-
+#https://leetcode.com/problems/spiral-matrix/
 #We have a helper function that prints one single loop
 #Careful not print duplicates on corners
 #each time a smaller loop is -2!!! in terms of width and height compared to previous one
@@ -37,6 +37,3 @@ class Solution:
             result.append(matrix[startY + n - 1][x])
         for y in range(startY + n - 2, startY, -1):
             result.append(matrix[y][startX])
-
-
-
