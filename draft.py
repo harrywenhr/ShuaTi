@@ -1,53 +1,66 @@
+#Use number as dominations, DFS
 
-#We transform this problem to max rectangle in histogram
-#For every row in matrix, we get the max rectangle of that rows histogram
-# We then will find the largest rectangle
+
+#Dp
+#We put number of combinations at n to target k As Combi(n, k)
+#value at n as a[n]
+#Combi(n, k) = Combi(n - 1, k) + Combi(n, k - a[n]) and add a[n] at end of those results
+
 
 class Solution:
-    #O(N^3)
-    def maximalRectangle(self, matrix: 'List[List[str]]') -> 'int':
-        if len(matrix) == 0:
-            return 0
-        if len(matrix) == 1:
-            return self.maximalRectangleInHistogram(matrix[0])
-        for row in range(0, len(matrix)):
-            for column in range(0, len(matrix[0])):
-                matrix[row][column] = int(matrix[row][column])
-                if row >= 1:
-                    #add previous height to current position if we have, otherwsie leave it be
-                    if (matrix[row - 1][column] > 0) and (matrix[row][column] == 1):
-                        matrix[row][column] += matrix[row - 1][column]
-        maxArea = 0
-        for row in range(0, len(matrix)):
-            currentArea = self.maximalRectangleInHistogram(matrix[row])
-            maxArea = max(maxArea, currentArea)
-        return maxArea
-    #O(N)
-    def maximalRectangleInHistogram(self, rowArray):
-        if len(rowArray) == 0:
-            return 0
-        heightStack = []
-        maxArea = 0
-        for i in range(0, len(rowArray)):
-            rowArray[i] = int(rowArray[i])
-            #Keep a ascending stack
-            if len(heightStack) == 0 or rowArray[heightStack[-1]] <= rowArray[i]:
-                heightStack.append(i)
-            else:
-                while(len(heightStack) > 0 and rowArray[heightStack[-1]] > rowArray[i]):
-                    currentItemHeight = rowArray[heightStack[-1]]
-                    heightStack.pop()
-                    leftIndex = heightStack[-1] if len(heightStack) > 0 else -1
-                    rightIndex = i
-                    currentArea = currentItemHeight * (rightIndex - leftIndex - 1)
-                    maxArea = max(maxArea, currentArea)
-                heightStack.append(i)
-        while(len(heightStack) > 0):
-            currentItemHeight = rowArray[heightStack[-1]]
-            heightStack.pop()
-            leftIndex = heightStack[-1] if len(heightStack) > 0 else -1
-            rightIndex = len(rowArray)
-            currentArea = currentItemHeight * (rightIndex - leftIndex - 1)
-            maxArea = max(maxArea, currentArea)
-        return maxArea
+    def combinationSum(self, candidates: 'List[int]', target: 'int') -> 'List[List[int]]':
+        # result = self.getCombinations(candidates, len(candidates) - 1, target)
+        # if not result:
+        #     return []
+        # return result
+        result = self.getCombinationsDP(candidates, target)
+        return result
+
+    def getCombinationsDP(self, candidates, target):
+        # target is 0 to target
+        emptyResult = [[]]
+        dpTable = [[ emptyResult for n in range(len(candidates))] for row in range(target + 1)]
+        #row here is target
+        for row in range(1, target + 1):
+            #columnn here is index
+            for column in range(len(candidates)):
+                combinations1 = dpTable[row][column - 1] if column >= 1 else None
+                newTarget = row - candidates[column]
+                combinations2 = dpTable[newTarget][column] if newTarget >= 0 else None
+                #print(dpTable)
+                #print("{0} {1} {2}".format(row, candidates[column], newTarget))
+                if not combinations1 and not combinations2:
+                    dpTable[row][column] = None
+                    continue
+                if not combinations2:
+                    dpTable[row][column] = combinations1
+                    continue
+                for combo in combinations2:
+                    combo.append(candidates[column])
+                if not combinations1:
+                    dpTable[row][column] = combinations2
+                    continue
+                if combinations1 and combinations2:
+                    dpTable[row][column] = combinations1 + combinations2
+        return dpTable[target][len(candidates) - 1]
+
+    def getCombinations(self, candidates, index, target):
+        if target == 0:
+            return [[]]
+        if target < 0:
+            return None
+        if index < 0 and target > 0:
+            return None
+        combinations1 = self.getCombinations(candidates, index - 1, target)
+        combinations2 = self.getCombinations(candidates, index, target - candidates[index])
+        if not combinations1 and not combinations2:
+            return None
+        if not combinations2:
+            return combinations1
+        for combo in combinations2:
+            combo.append(candidates[index])
+        if not combinations1:
+            return combinations2
+        return combinations1 + combinations2
+
 
