@@ -7,42 +7,63 @@
 #Combi(n, k) = Combi(n - 1, k) + Combi(n, k - a[n]) and add a[n] at end of those results
 
 
-class Solution:
-    def combinationSum(self, candidates: 'List[int]', target: 'int') -> 'List[List[int]]':
-        # result = self.getCombinations(candidates, len(candidates) - 1, target)
-        # if not result:
-        #     return []
-        # return result
-        result = self.getCombinationsDP(candidates, target)
-        return result
 
-    def getCombinationsDP(self, candidates, target):
-        # target is 0 to target
-        emptyResult = [[]]
-        dpTable = [[ emptyResult for n in range(len(candidates))] for row in range(target + 1)]
-        #row here is target
-        for row in range(1, target + 1):
-            #columnn here is index
-            for column in range(len(candidates)):
-                combinations1 = dpTable[row][column - 1] if column >= 1 else None
-                newTarget = row - candidates[column]
-                combinations2 = dpTable[newTarget][column] if newTarget >= 0 else None
-                #print(dpTable)
-                #print("{0} {1} {2}".format(row, candidates[column], newTarget))
-                if not combinations1 and not combinations2:
-                    dpTable[row][column] = None
-                    continue
-                if not combinations2:
-                    dpTable[row][column] = combinations1
-                    continue
-                for combo in combinations2:
-                    combo.append(candidates[column])
-                if not combinations1:
-                    dpTable[row][column] = combinations2
-                    continue
-                if combinations1 and combinations2:
-                    dpTable[row][column] = combinations1 + combinations2
-        return dpTable[target][len(candidates) - 1]
+#Combo(k) = combo (k - a[0]) + combo (k - a[1]) + combo (k - a[2]) ...... combo (k - a[n])
+
+class Solution:
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        candidates.sort()
+
+        return self.recusiveGetCombo(candidates, target)
+
+        # dp = []
+        # # run through all target from 1 to target
+        # for i in range(1, target + 1):
+        #     # run through all candidates which is smaller than i
+        #     new_dp = []
+        #     #for each target we try all candidates in ascending order
+        #     for j in range(len(candidates)):
+        #         # skip candidate which is larger than current target
+        #         if candidates[j] > i:
+        #             break
+        #         # special case
+        #         if candidates[j] == i:
+        #             new_dp.append([candidates[j]])
+        #         else:
+        #             if i - candidates[j] > 0:
+        #                 newTarget = i - candidates[j]
+        #                 newTargetIndex = newTarget - 1
+        #                 for comb in dp[newTargetIndex]:
+        #                     #make sure list is in asceding order, prevent duplicates in final output
+        #                     if candidates[j] >= comb[-1]:
+        #                         newCombo = comb + [candidates[j]]
+        #                         new_dp.append(newCombo) 
+        #                 #new_dp.extend(comb + [candidates[j]] for comb in dp[newTargetIndex] if candidates[j] >= comb[-1])
+        #     dp.append(new_dp)
+            
+        # return dp[-1]
+
+#We also only append candidates to combo if it is >= to prevent duplicates
+    def recusiveGetCombo(self, candidates, target):
+        currentCombos = []
+        for i in range(len(candidates)):
+            if candidates[i] > target:
+                continue
+            if candidates[i] == target:
+                currentCombos.append([candidates[i]])
+            else:
+                newTarget = target - candidates[i]
+                previousCombos = self.recusiveGetCombo(candidates, newTarget)
+                for combo in previousCombos:
+                    if combo[-1] <= candidates[i]:
+                        newCombos = combo + [candidates[i]]
+                        currentCombos.append(newCombos)
+        return currentCombos
 
     def getCombinations(self, candidates, index, target):
         if target == 0:
