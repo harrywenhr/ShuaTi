@@ -1,10 +1,11 @@
-#Use number as dominations, DFS
-
 
 #Dp
 #We put number of combinations at n to target k As Combi(n, k)
 #value at n as a[n]
 #Combi(n, k) = Combi(n - 1, k) + Combi(n, k - a[n]) and add a[n] at end of those results
+
+
+
 
 
 
@@ -18,36 +19,59 @@ class Solution:
         :rtype: List[List[int]]
         """
         candidates.sort()
+        return self.combinationSumHelper(candidates, target)
+        # return self.recusiveGetCombo(candidates, target)
 
-        return self.recusiveGetCombo(candidates, target)
-
-        # dp = []
-        # # run through all target from 1 to target
-        # for i in range(1, target + 1):
-        #     # run through all candidates which is smaller than i
-        #     new_dp = []
-        #     #for each target we try all candidates in ascending order
-        #     for j in range(len(candidates)):
-        #         # skip candidate which is larger than current target
-        #         if candidates[j] > i:
-        #             break
-        #         # special case
-        #         if candidates[j] == i:
-        #             new_dp.append([candidates[j]])
-        #         else:
-        #             if i - candidates[j] > 0:
-        #                 newTarget = i - candidates[j]
-        #                 newTargetIndex = newTarget - 1
-        #                 for comb in dp[newTargetIndex]:
-        #                     #make sure list is in asceding order, prevent duplicates in final output
-        #                     if candidates[j] >= comb[-1]:
-        #                         newCombo = comb + [candidates[j]]
-        #                         new_dp.append(newCombo) 
-        #                 #new_dp.extend(comb + [candidates[j]] for comb in dp[newTargetIndex] if candidates[j] >= comb[-1])
-        #     dp.append(new_dp)
+        dp = []
+        # run through all target from 1 to target
+        for i in range(1, target + 1):
+            # run through all candidates which is smaller than i
+            new_dp = []
+            #for each target we try all candidates in ascending order
+            for j in range(len(candidates)):
+                # skip candidate which is larger than current target
+                if candidates[j] > i:
+                    break
+                # special case
+                if candidates[j] == i:
+                    new_dp.append([candidates[j]])
+                else:
+                    if i - candidates[j] > 0:
+                        newTarget = i - candidates[j]
+                        newTargetIndex = newTarget - 1
+                        for comb in dp[newTargetIndex]:
+                            #make sure list is in asceding order, prevent duplicates in final output
+                            if candidates[j] >= comb[-1]:
+                                newCombo = comb + [candidates[j]]
+                                new_dp.append(newCombo) 
+                        #new_dp.extend(comb + [candidates[j]] for comb in dp[newTargetIndex] if candidates[j] >= comb[-1])
+            dp.append(new_dp)
             
-        # return dp[-1]
+        return dp[-1]
 
+    def combinationSumHelper(self, candidates, target):
+        #for target from 1 to target as rows
+        #dpTable = [[0 for colomn in range(len(candidates))] for row in range(1, target + 1)]
+        dpTable = [[0 for i in range(len(candidates))] for j in range(target + 2)]
+        for k in range(1, target + 1):
+            for i in range(len(candidates)):
+                currentCombos = []
+                combinations1 = dpTable[k][i - 1] if i > 0 else []
+                newK = k - candidates[i]
+                combinations2 = dpTable[newK][i] if newK > 0 else []
+                #we only append if we have previous combos
+                if len(combinations1) > 0:
+                    currentCombos.extend(combinations1)
+                #Curial base case here, if nothing in previous combo, we treat current one as one
+                if len(combinations2) == 0 and newK == 0:
+                    newCombo = [candidates[i]]
+                    currentCombos.append(newCombo)
+                else:
+                    for combo in combinations2:
+                        newCombo = combo + [candidates[i]]
+                        currentCombos.append(newCombo)
+                dpTable[k][i] = currentCombos
+        return dpTable[target][len(candidates)-1]
 #We also only append candidates to combo if it is >= to prevent duplicates
     def recusiveGetCombo(self, candidates, target):
         currentCombos = []
