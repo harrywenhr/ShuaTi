@@ -16,6 +16,25 @@ https://leetcode.com/problems/insert-interval/
 # merge intervals 
 
 class Solution:
+    #keep 2 index
+    #checkIndex
+    #returnIndex
+    def onePassInert(self, intervals, newInterval):
+        s, e = newInterval.start, newInterval.end
+        #we fill intervals strickly less the new and larger than new
+        left, right = [], []
+        for i in intervals:
+            if i.end < s:
+                left += i,
+            elif i.start > e:
+                right += i,
+            #we face over lap situation, we keep getting the min and max for the actual start and end position
+            else:
+                s = min(s, i.start)
+                e = max(e, i.end)
+        return left + [Interval(s, e)] + right
+
+
     def print(self, intervals):
         for interval in intervals:
             print(" {0},{1} ".format(interval.start, interval.end))
@@ -41,7 +60,7 @@ class Solution:
         checkingI = 1
         while checkingI < len(intervals):
             #print("{0} {1}".format(returnI, checkingI))
-            #do not over lap, we update the new ont overlap interval
+            #do not over lap, we update the new not overlap interval
             if intervals[returnI].end < intervals[checkingI].start:
                 returnI += 1
                 intervals[returnI] = intervals[checkingI]
