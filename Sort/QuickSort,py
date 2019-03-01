@@ -1,0 +1,31 @@
+
+
+def quickSort(nums):
+	quickSortHelper(nums, 0, len(nums) - 1)
+
+
+def partition(nums, low, high):
+    #r = Random Number from lo to hi
+    #Swap arr[r] and arr[hi]
+	pivot = nums[high]
+	currentSmallerIndex = low - 1
+	for i in range(low, high):
+		#if current element less than pivot, we in crease the currentSmallerIndex
+		#and swap nums[currentSmallerIndex] with current element
+		#if larger we move on
+		if nums[i] <= pivot:
+			currentSmallerIndex += 1
+			nums[i], nums[currentSmallerIndex] = nums[currentSmallerIndex], nums[i]
+	#now from low to currentSmallerIndex, well less than pivot
+	nums[currentSmallerIndex + 1], nums[high] = nums[high], nums[currentSmallerIndex + 1]
+	return currentSmallerIndex + 1
+
+
+def quickSortHelper(nums, low, high):
+	if low < high:
+		#/* pi is partitioning index, arr[pi] is now
+          # at right place 
+          #anything before pi is less, after is bigger
+		pivotIndex = partition(nums, low, high)
+		quickSortHelper(nums, low, pivotIndex - 1)
+		quickSortHelper(nums, pivotIndex + 1, high)
