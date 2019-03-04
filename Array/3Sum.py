@@ -1,3 +1,4 @@
+https://leetcode.com/problems/3sum/
 # 1. Sort all element of array
 # 2. Run loop from i=0 to n-2.
 #      Initialize two index variables l=i+1 and r=n-1
@@ -12,6 +13,9 @@
 # 6. If sum is greater than zero then r--
 # 7. If not exist in array then print not found.
 #[-4,-1,-1,0,1,2]
+
+
+
 class Solution:
     def threeSum(self, nums: 'List[int]') -> 'List[List[int]]':
         res = []
@@ -51,3 +55,33 @@ class Solution:
             #we have checked all posibilities on current index i, we move on
         return res
 
+
+
+
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        for i in range(0, len(nums) - 2):
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            target = nums[i]
+            if target > 0:
+                break
+            leftI = i + 1
+            rightI = len(nums) - 1
+            while leftI < rightI:
+                if target + nums[leftI] + nums[rightI] == 0:
+                    res.append([target, nums[leftI], nums[rightI]])
+                    leftI += 1
+                    rightI -= 1
+                    while (nums[leftI - 1] == nums[leftI] and leftI < rightI):
+                        leftI += 1
+                    while (nums[rightI + 1] == nums[rightI] and leftI < rightI):
+                        rightI -= 1
+                elif target + nums[leftI] + nums[rightI] > 0:
+                    rightI -= 1
+                else:
+                    leftI += 1
+        return res

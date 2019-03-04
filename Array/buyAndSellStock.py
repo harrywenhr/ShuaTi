@@ -14,6 +14,35 @@ class Solution:
         return maxProfit
 
 
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        maxP = 0
+        if len(prices) == 0:
+            return 0
+        lowerP = prices[0]
+        for i in range(1, len(prices)):
+            if prices[i] < lowerP:
+                lowerP = prices[i]
+            else:
+                currentP = prices[i] - lowerP
+                maxP = max(currentP, maxP)
+        return maxP
+
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        maxP = 0
+        if len(prices) <= 1:
+            return 0
+        for i in range(1, len(prices)):
+            gain = prices[i] - prices[i - 1]
+            if gain > 0:
+                maxP += gain
+        return maxP
+
+
+
 https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
 #as many transaction as you like
 
@@ -50,8 +79,9 @@ class Solution:
         if len(prices) <= 1:
             return 0
         maxTransaction = k
+        #careful for initialization, reuse array objects
         dpTable = [[0 for i in range(len(prices))] for j in range(maxTransaction + 1)]
-        #rint(dpTable)
+        #print(dpTable)
         #number of transactins
         for i in range(1, maxTransaction + 1):
             #we use this to save max(dpTable[i - 1][x - 1] - prices[x])
@@ -74,3 +104,28 @@ class Solution:
                 dpTable[i][j] = max(profit1, profit2)
         #print(dpTable)
         return dpTable[maxTransaction][len(prices) - 1]
+
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        k = 2
+        if len(prices) <=1 :
+            return 0
+        dp = [[0 for i in range(len(prices))] for j in range(k + 1)]
+        for i in range(len(dp)):
+            #we mark max dp[i - 1][x - 1] - prices[x] from 0 till j - 1 as prevMax
+            #so when new j comes, we compare current dp[i - 1][j - 2] - prices[j - 1] with prevMaX
+            prevMax = -sys.maxsize
+            for j in range(len(prices)):
+                if i == 0 or j == 0:
+                    dp[i][j] = 0
+                    continue
+                currentPrev = dp[i - 1][j - 2] if  j >= 2 else 0
+                prevMax = max(prevMax, currentPrev - prices[j - 1])
+                profit1 = dp[i][j - 1]
+                profit2 = 0
+                profit2 = prices[j] + prevMax
+                # for x in range(0, j):
+                #     profit2 = max(profit2, dp[i - 1][x - 1] + prices[j] - prices[x])
+                dp[i][j] = max(profit1, profit2)
+        return dp[k][-1]       

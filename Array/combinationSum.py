@@ -108,3 +108,21 @@ class Solution:
         if not combinations1:
             return combinations2
         return combinations1 + combinations2
+
+
+class Solution:
+    def combinationSum(self, candidates, target):
+        path = []
+        result = []
+        self.helper(candidates, target, 0, path, result)
+        return result
+    def helper(self, candidates, target, index, path, result):
+        if target < 0:
+            return
+        if target == 0:
+            result.append(list(path))
+        else:
+            for i in range(index, len(candidates)):
+                path.append(candidates[i])
+                self.helper(candidates, target - candidates[i], i, path, result)
+                del path[-1]

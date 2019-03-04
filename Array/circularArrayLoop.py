@@ -54,3 +54,49 @@ class Solution:
         newIndex = residue if residue >= 0 else (len(nums) + residue)
         return newIndex
 
+
+
+
+
+
+
+
+
+
+
+
+class Solution:
+    def circularArrayLoop(self, nums: List[int]) -> bool:
+        if len(nums) <=1 :
+            return False
+        for i in range(len(nums)):
+            if nums[i] == 0:
+                continue
+            slowI = fastI = i
+            while True:
+                slowI = self.nextIndex(nums, slowI)
+                fastI = self.nextIndex(nums, self.nextIndex(nums, fastI))
+                if fastI == -1:
+                    #bad path
+                    break
+                if slowI == fastI:
+                    if slowI == self.nextIndex(nums, slowI):
+                        nums[slowI] = 0
+                        break
+                    return True
+            slowI = i
+            while(self.nextIndex(nums, slowI) >= 0):
+                nextI = self.nextIndex(nums, slowI)
+                nums[slowI] = 0
+                slowI = nextI
+        return False
+                
+    #we valid if we reverse direction here        
+    def nextIndex(self, nums, index):
+        if index == -1:
+            return -1
+        moveI = nums[index] % len(nums)
+        nextI = (moveI + index) % len(nums)
+        if nums[nextI] * nums[index] <= 0:
+            return -1
+        return nextI

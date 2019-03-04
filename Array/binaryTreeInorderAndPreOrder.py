@@ -22,8 +22,8 @@ inorder: left, root, right
 [root, left1,left2,left3,right1,right2]
 [left1,left2, left3, root, right1, right2]
 
-when we get a node from preorder, we treat as a current root, we find that value
-in inorder travel, so the left part length of inorder travel equals the left part 
+when we get a node from preorder, we treat as a current root, we find that same value
+in inorder travel (relative order), so the left part length of inorder travel equals the left part 
 nodes in preorder travel, we recursively send the left part and right part
 
 
@@ -54,5 +54,22 @@ class Solution:
 
 
 
-
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        vmap = {}
+        for i in range(len(inorder)):
+            vmap[inorder[i]] = i
+        return self.helper(preorder, inorder, vmap)
+    def helper(self, remainPreorder, remainInorder, vmap):
+        if not remainPreorder or not remainInorder:
+            return None
+        currentNodeValue = remainPreorder[0]
+        relativeNodeIndex = vmap[currentNodeValue] - vmap[remainInorder[0]]
+        leftNode = self.helper(remainPreorder[1:relativeNodeIndex + 1], remainInorder[:relativeNodeIndex], vmap)
+        rightNode = self.helper(remainPreorder[relativeNodeIndex + 1:], remainInorder[relativeNodeIndex + 1:], vmap)
+        currentNode = TreeNode(currentNodeValue)
+        
+        currentNode.left = leftNode
+        currentNode.right = rightNode
+        return currentNode
         

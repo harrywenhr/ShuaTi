@@ -55,3 +55,52 @@ class Solution:
         findNSum(0, len(nums) - 1, 4, target, [], results)
         return results
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        def findNsum(N, startPivot, currentPath, result, target):
+            
+            if N < 2 or (startPivot + N) > len(nums) or nums[startPivot] * N > target or nums[-1] * N < target:
+                return
+            if N > 2:
+                for i in range(startPivot, len(nums)):
+                    if i == startPivot or nums[i] > nums[i - 1]:
+                        newPath = currentPath + [nums[i]]
+                        findNsum(N - 1, i + 1, newPath, result, target - nums[i])
+            else:
+                leftI = startPivot
+                rightI = len(nums) - 1
+                while leftI < rightI:
+                    currentSum = nums[leftI] + nums[rightI]
+                    if currentSum == target:
+                        newPath = currentPath + [nums[leftI], nums[rightI]]
+                        result.append(newPath)
+                        leftI += 1
+                        rightI -= 1
+                        while (nums[leftI] == nums[leftI - 1] and leftI < rightI ):
+                            leftI += 1
+                        while (nums[rightI] == nums[rightI + 1] and leftI < rightI):
+                            rightI -= 1
+                    elif (currentSum < target):
+                        leftI += 1
+                    else:
+                        rightI -= 1
+        result = [] 
+        nums.sort()
+        findNsum(4, 0, [], result, target)
+        return result
