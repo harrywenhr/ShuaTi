@@ -47,3 +47,33 @@ class Solution:
             maxArea = max(area, maxArea)
            
         return maxArea
+
+
+#practice
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        heightS = []
+        maxArea = 0
+        if len(heights) == 0:
+            return 0
+        for i in range(len(heights)):
+            if not heightS:
+                heightS.append(i)
+            else:
+                while(len(heightS) > 0 and heights[heightS[len(heightS)-1]] >= heights[i]):
+                    currentItemIndex = heightS.pop()
+                    leftSmallIndex = heightS[len(heightS)-1] if len(heightS) > 0 else -1
+                    rightSmallIndex = i
+                    currentArea = (rightSmallIndex - leftSmallIndex -1) * heights[currentItemIndex]
+                    maxArea = max(maxArea, currentArea)
+                heightS.append(i)
+        while len(heightS) > 0:
+            currentItemIndex = heightS.pop()
+            leftSmallIndex = heightS[len(heightS)-1] if len(heightS) > 0 else -1
+            rightSmallIndex = len(heights)
+            currentArea = (rightSmallIndex - leftSmallIndex -1) * heights[currentItemIndex]
+            maxArea = max(maxArea, currentArea)
+        return maxArea
+
+
+

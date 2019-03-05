@@ -32,3 +32,34 @@ class Solution:
             return self.searchHelper(nums, target, midIndex + 1, end, isFirst)
         else:
             return self.searchHelper(nums, target, start, midIndex - 1, isFirst)
+
+
+
+
+#practice
+
+class Solution:
+    #we use binary search, when search for first position, if equal, we go left
+    #we search last position, if equal, we go right
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        firstP = self.helper(nums, target, 0, len(nums) - 1, True)
+        lastP = self.helper(nums, target, 0, len(nums) - 1, False)
+        return [firstP, lastP]
+    def helper(self, nums, target, leftI, rightI, isFirst):
+        if leftI > rightI:
+            return -1
+        mid = leftI + (rightI - leftI) // 2
+        if nums[mid] == target:
+            #we have a potential match
+            if isFirst:
+                #we go left
+                nextCandidate = self.helper(nums, target, leftI, mid - 1, isFirst)
+                return nextCandidate if nextCandidate >= 0 else mid
+            else:
+                #we go right
+                nextCandidate = self.helper(nums, target, mid + 1, rightI, isFirst)
+                return nextCandidate if nextCandidate >= 0 else mid
+        elif nums[mid] > target:
+            return self.helper(nums, target, leftI, mid - 1, isFirst)
+        else:
+            return self.helper(nums, target, mid + 1, rightI, isFirst)

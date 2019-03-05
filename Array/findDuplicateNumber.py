@@ -33,3 +33,26 @@ class Solution:
             # print(slowI)
             # print(fast)
         return slowI
+
+
+
+#practice
+#
+class Solution:
+    #nums[0] is a start of non circle part
+    def findDuplicate(self, nums: List[int]) -> int:
+        slowI = fastI = 0
+        while True:
+            slowI = nums[slowI]
+            fastI = nums[nums[fastI]]
+            if slowI == fastI:
+                #we found the match
+                break
+        #we put slowI in begin again
+        slowI = 0
+        while True:
+            slowI = nums[slowI]
+            fastI = nums[fastI]
+            if slowI == fastI
+                break
+        return slowI

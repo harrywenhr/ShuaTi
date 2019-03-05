@@ -1,4 +1,4 @@
-
+https://leetcode.com/problems/container-with-most-water/
 greedy apoarch, 2 pointers at start and end, we always move the shorter line pointer as it may result in a larger area
 class Solution:
 	def maxArea(self, height: 'List[int]') -> 'int':
@@ -18,3 +18,20 @@ class Solution:
 				maxArea = max(maxArea, currentArea)
 				rightI -= 1
 		return maxArea
+
+
+
+def maxArea(self, height: 'List[int]') -> 'int':
+    maxArea = 0
+    leftI = 0
+    rightI = len(height) - 1
+    while leftI < rightI:
+        if height[leftI] <= height[rightI]:
+            currentArea = height[leftI] * (rightI - leftI)
+            maxArea = max(currentArea, maxArea)
+            leftI += 1
+        else:
+            currentArea = height[rightI] * (rightI - leftI)
+            maxArea = max(currentArea, maxArea)
+            rightI -= 1
+    return maxArea

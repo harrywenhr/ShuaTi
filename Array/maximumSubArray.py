@@ -1,5 +1,9 @@
 https://leetcode.com/problems/maximum-subarray/
 
+Given an integer array nums, find the contiguous subarray 
+(containing at least one number) which has the largest sum and return its sum.
+
+
 class Solution:
     def maxSubArray(self, nums: 'List[int]') -> 'int':
         answer = nums[0]
@@ -13,3 +17,17 @@ class Solution:
             if nums[i] > answer:
                 answer = nums[i]
         return answer
+
+
+#practice
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        if len(nums) < 1:
+            return []
+        maxSum = nums[0]
+        for i in range(1, len(nums)):
+            prevSumEnd = nums[i - 1]
+            currentSum = max(prevSumEnd + nums[i], nums[i])
+            maxSum = max(maxSum, currentSum)
+            nums[i] = currentSum
+        return maxSum

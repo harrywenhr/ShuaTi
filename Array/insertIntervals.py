@@ -16,9 +16,7 @@ https://leetcode.com/problems/insert-interval/
 # merge intervals 
 
 class Solution:
-    #keep 2 index
-    #checkIndex
-    #returnIndex
+
     def onePassInert(self, intervals, newInterval):
         s, e = newInterval.start, newInterval.end
         #we fill intervals strickly less the new and larger than new
@@ -38,6 +36,8 @@ class Solution:
     def print(self, intervals):
         for interval in intervals:
             print(" {0},{1} ".format(interval.start, interval.end))
+
+
     def insert(self, intervals: List[Interval], newInterval: Interval) -> List[Interval]:
         originalLength = len(intervals)
         for i in range(len(intervals)):
@@ -50,7 +50,9 @@ class Solution:
             intervals.append(newInterval)
         #self.print(intervals)
         return self.merge(intervals)
-
+    #keep 2 index
+    #checkIndex
+    #returnIndex
     def merge(self, intervals: 'List[Interval]') -> 'List[Interval]':
         if len(intervals) <= 1:
             return intervals
@@ -74,3 +76,38 @@ class Solution:
                 checkingI += 1
         returnI += 1
         return intervals[:returnI]
+
+
+#practice
+class Solution:
+    #keep 2 index
+    #checkIndex
+    #returnIndex
+    def insert(self, intervals: List[Interval], newInterval: Interval) -> List[Interval]:
+        if len(intervals) == 0:
+            return [newInterval]
+        originalL = len(intervals)
+        for i in range(len(intervals)):
+            if newInterval.start < intervals[i].start:
+                intervals.insert(i, newInterval)
+                break
+        if originalL == len(intervals):
+            intervals.append(newInterval)
+        return self.merge(intervals)
+    def merge(self, intervals: 'List[Interval]') -> 'List[Interval]':
+        checkI = 1
+        returnI = 0
+        if len(intervals) <= 1:
+            return intervals
+        while checkI < len(intervals):
+            if intervals[checkI].start > intervals[returnI].end:
+                #not overlap, we move on, and copy checkI interval to returnI interval
+                returnI += 1
+                intervals[returnI].start = intervals[checkI].start
+                intervals[returnI].end = intervals[checkI].end
+                checkI += 1
+            else:
+                newIntervalEnd = max(intervals[returnI].end, intervals[checkI].end)
+                intervals[returnI].end = newIntervalEnd
+                checkI += 1
+        return intervals[:returnI + 1]

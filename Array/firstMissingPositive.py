@@ -21,6 +21,7 @@ we scan array last time from second position, since we know we have 1 in array
 return first non negative position + 1 or len(nums) + 1
 
 class Solution:
+    #prefered
     def firstMissingPositive(self, nums: 'List[int]') -> 'int':
         if len(nums) == 0:
             return 1
@@ -73,4 +74,40 @@ class Solution:
                 return
             nums[index] = updateValue
             self.updateNumbers(nums, currentValue - 1, currentValue)
+
+
+
+#practice
+
+class Solution:
+    #make a 1,2,3,4 ... filled array
+    #the largest missing number is len(nums) + 1
+    #we mark number - 1 position in array to negative represents we have this number  (if aready negtive, we got dups)
+    #-4 will also remain its original value
+    #we also need to mark the original nagative and larger then array number to some
+    #invalid number, we use 1 in this case, so we first check if we miss 1 here
+    #then we scan array return first non-agtive position + 1 as our missing number 
+    #or len(nums) + 1
+    def firstMissingPositive(self, nums: 'List[int]') -> 'int':
+        missingOne = True
+        for i in range(len(nums)):
+            if nums[i] == 1:
+                missingOne = False
+            else:
+                #no place for a 1,2,3,4 filled array
+                if nums[i] < 1 or nums[i] > len(nums):
+                    nums[i] = 1
+        if missingOne:
+            return 1
+        for i in range(len(nums)):
+            if nums[i] != 1:
+                #we mark the filled position to negative, if its already nagtive we do nothing as current
+                #one is a dup
+                newP = abs(nums[i]) - 1
+                if nums[newP] > 0:
+                    nums[newP] = - nums[newP]
+        for i in range(1, len(nums)):
+            if nums[i] > 0:
+                return i + 1
+        return len(nums) + 1
             

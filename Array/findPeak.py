@@ -10,7 +10,7 @@ You may imagine that nums[-1] = nums[n] = -∞.
 
 
 #Binary search, if mid is not peak, we go to the neibor with higher value
-
+#treat out of bounds as infinte lower
 
 
 
@@ -64,3 +64,25 @@ class Solution:
             return self.findPeakHelper(nums, start, midIndex)
         if nums[end] > nums[midIndex]:
             return self.findPeakHelper(nums, midIndex, end)
+
+
+#practice
+class Solution:
+    #we always go higher neibor
+    def findPeakElement(self, nums: List[int]) -> int:
+        leftI = 0
+        rightI = len(nums) - 1
+        while leftI < rightI:
+            mid = leftI + (rightI - leftI ) // 2
+            leftNeighbor = nums[mid - 1] if mid >= 1 else -sys.maxsize
+            rightNeighbor = nums[mid + 1] if (mid < len(nums) - 1) else -sys.maxsize
+            if nums[mid] > leftNeighbor and nums[mid] > rightNeighbor:
+                return mid
+            if leftNeighbor > rightNeighbor:
+                #go left
+                rightI = mid - 1
+            else:
+                #go right
+                leftI = mid + 1
+        return leftI
+

@@ -1,5 +1,7 @@
 #https://leetcode.com/problems/game-of-life/
 #We scan matrix twice
+#king thing is when we flip the number, we maintain its property odd is live
+#even is dead
 #First time we get the number of odd numbers in neibors, then if we need to
 # Flip current number from 0 -> 1, we set it to 2, if 1 -> 0 we set it to 3
 #On second scan, if number == 2 we set it to 1, if 3 we set it to 0
@@ -36,3 +38,6 @@ class Solution:
                         if board[j][i] % 2 == 1:
                             oddNumber += 1
         return oddNumber
+
+
+#practice should be no need

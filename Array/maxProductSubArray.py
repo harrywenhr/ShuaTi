@@ -1,5 +1,8 @@
 https://leetcode.com/problems/maximum-product-subarray/
 
+Given an integer array nums, find the contiguous subarray within an
+ array (containing at least one number) which has the largest product.
+
 # we store the min and max value at value ending at position i
 
 class Solution:
@@ -23,3 +26,21 @@ class Solution:
             previousMin = currentMin
             previousMax = currentMax
         return result
+
+#practice
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        currentMin = currentMax = previousMin = previousMax = nums[0]
+        finalMax = currentMax
+        for i in range(1, len(nums)):
+            if nums[i] < 0:
+                currentMin = min(nums[i], nums[i] * previousMax)
+                currentMax = max(nums[i], nums[i] * previousMin)
+            else:
+                currentMin = min(nums[i], nums[i] * previousMin)
+                currentMax = max(nums[i], nums[i] * previousMax)
+            finalMax = max(finalMax, currentMax)
+            previousMax = currentMax
+            previousMin = currentMin
+        return finalMax
+

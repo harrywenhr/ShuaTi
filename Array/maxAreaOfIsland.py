@@ -12,6 +12,7 @@ class Solution:
                     maxIsland = max(maxIsland, currentIsland)
                     print("{0}, {1}, {2}".format(maxIsland, row, column))
         return maxIsland
+
     #we mark position as visited once we added that to stack
     def dfs(self, grid, row, column):
         currentArea = 1
@@ -33,3 +34,5 @@ class Solution:
                         grid[row][column] = -1
                         DFSStack.append([row, column])
         return currentArea
+
+#practiced!
