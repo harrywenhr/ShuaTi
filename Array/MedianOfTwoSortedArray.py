@@ -139,6 +139,71 @@ class Solution:
 			return self.recursiveFind(ALeft, ARight, nums1, nums2, isOdd)
 
 
+#practice
+
+#cut with smalled array
+#median means evenly divide elements, all left part is less then right part
+#binary search to cut
+
+array m, array n 
+
+m left part is [Aleft to Acut)
+m right part is [Acut, Aright]
+
+Bcut = (len(m) + len(n)) // 2 - Acut if even
+(len(m) + len(n) + 1) // 2 - Acut + if odd
+import statistics
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        #make sure nums2 len >= nums1
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        if len(nums1) == 0:
+            return statistics.median(nums2)
+        if len(nums2) == 0:
+            return statistics.median(nums1)
+        m = len(nums1)
+        n = len(nums2)
+        isOdd = True if ((m + n) % 2 == 1) else False
+        #we cut from 0 to end of length, 0 means nothing on left,
+        # length means nothing on right
+        Aleft = 0
+        Aright = len(nums1)
+        #handles when there's only one element
+        while Aleft <= Aright:
+            #print(Aleft)
+            #print(Aright)
+            Acut = Aleft + (Aright - Aleft) // 2
+            Bcut = (m + n) // 2 - Acut
+            if isOdd:
+                Bcut = (m + n + 1) // 2 - Acut
+            #print("{0} {1}".format(Acut, Bcut))
+            AleftLarge = nums1[Acut - 1] if Acut >= 1 else -sys.maxsize
+            BleftLarge = nums2[Bcut - 1] if Bcut >= 1 else -sys.maxsize
+            ArightSmall = nums1[Acut] if Acut < m else sys.maxsize
+            BrightSmall = nums2[Bcut] if Bcut < n else sys.maxsize
+            #valid the invariant
+            leftSideMax = max(AleftLarge, BleftLarge)
+            rightSideMin = min(ArightSmall, BrightSmall)
+            if leftSideMax <= rightSideMin:
+                finalMedian = float((leftSideMax + rightSideMin)) / 2.0
+                if isOdd:
+                    finalMedian = float(leftSideMax)
+                return finalMedian
+            else:
+                #we have small items on the right side
+                #whoever is smaller on left part, we cut more to bring 
+                #small items from right side
+                if AleftLarge <= BleftLarge:
+                    #move Acut to right
+                    Aleft = Acut + 1
+                    #print("Aleft {}".format(Aleft))
+                else:
+                    #move Acut to left
+                    Aright = Acut - 1
+
+
+
 
 
 

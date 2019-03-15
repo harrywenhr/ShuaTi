@@ -5,9 +5,10 @@
 # the potential maximum idle slots is
 # A .... A .... A .... A .... A
 # maxIdle = (numberOfA - 1 ) * n 
-# we then fill in Bs, Cs, notice that if numberOfB or C or D == A, we only use B -1 numeber of B
+# we then fill in Bs, Cs, notice that if numberOfB or C or D == A, 
+# we only use B -1 numeber of B
 # actualIdle = maxIdle - filledIns if less then 0, we set as 0
-# final result -= actualIdle + elements
+# final result = actualIdle + elements
 class Solution:
     def leastInterval(self, tasks: 'List[str]', n: 'int') -> 'int':
         if len(tasks) <= 1:
@@ -30,5 +31,27 @@ class Solution:
         	if maxIdleNumber <= 0:
         		return len(tasks)
         return len(tasks) + maxIdleNumber
+
+
+#practiced
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        if len(tasks) <= 1:
+            return len(tasks)
+        taskMap = {}
+        for task in tasks:
+            if task in taskMap:
+                taskMap[task] += 1
+            else:
+                taskMap[task] = 1
+        sortedTaskMap = sorted(taskMap.items(), key = lambda item:item[1], reverse = True)
+        maxIdle = (sortedTaskMap[0][1] - 1) * n
+        for i in range(1,len(sortedTaskMap)):
+            filledTasks = sortedTaskMap[i][1]
+            if sortedTaskMap[i][1] == sortedTaskMap[0][1]:
+                 filledTasks -= 1
+            maxIdle -= filledTasks
+        maxIdle = 0 if maxIdle < 0 else maxIdle
+        return maxIdle + len(tasks)
 
 

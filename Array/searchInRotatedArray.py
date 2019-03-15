@@ -14,6 +14,39 @@
     # if n[mid] <= target <= n[end] -> normal sorted array
     # else start to mid - 1
 
+#https://leetcode.windliang.cc/leetCode-33-Search-in-Rotated-Sorted-Array.html
+#when we get a mid, either start mid is sorted or mid end is sorted
+#we check if target is in sorted part, if so, go on, if not discard the sorted part
+
+
+
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        if len(nums) == 0:
+            return -1
+        left = 0
+        right = len(nums) - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                return mid
+            #consider equal as mid may land on beginning
+            if nums[mid] >= nums[left]:
+                #left part sorted
+                if nums[left] <= target < nums[mid]:
+                    #target in sorted part
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            else:
+                #sorted on right
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid -1
+        return -1
+
+
 
 
 
@@ -57,3 +90,33 @@ class Solution:
             elif nums[mid] < target:
                 start = mid + 1
         return -1
+
+
+
+
+#practice
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        if len(nums) == 0:
+            return -1
+        left = 0
+        right = len(nums) - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                return mid
+            #consider equal as mid may land on beginning
+            if nums[mid] >= nums[left]:
+                #left part sorted
+                if nums[left] <= target < nums[mid]:
+                    #target in sorted part
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            else:
+                #sorted on right
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid -1
+        return -1        

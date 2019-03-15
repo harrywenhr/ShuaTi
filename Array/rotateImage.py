@@ -1,4 +1,7 @@
 https://leetcode.com/problems/rotate-image/
+
+#transpose and revert rows
+
 class Solution:
     def rotate(self, matrix: 'List[List[int]]') -> 'None':
         """
@@ -14,3 +17,4 @@ class Solution:
         for i in range(0, len(rowArray) // 2):
             rowArray[i], rowArray[-1 - i] = rowArray[-1 - i], rowArray[i]
 
+#practiced

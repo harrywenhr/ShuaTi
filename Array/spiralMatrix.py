@@ -37,3 +37,5 @@ class Solution:
             result.append(matrix[startY + n - 1][x])
         for y in range(startY + n - 2, startY, -1):
             result.append(matrix[y][startX])
+
+#practiced

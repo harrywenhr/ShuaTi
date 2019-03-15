@@ -53,3 +53,5 @@ class Solution:
             maxArea = max(maxArea, currentArea)
         return maxArea
 
+#practiced 
+

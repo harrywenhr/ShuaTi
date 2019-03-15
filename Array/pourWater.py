@@ -13,6 +13,8 @@ class Solution:
                 if best != K:
                     H[best] += 1
                     break
+            #if we did not break in for loop
             else:
                 H[K] += 1
         return H
+#practiced

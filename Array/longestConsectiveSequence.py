@@ -9,7 +9,8 @@ Your algorithm should run in O(n) complexity.
 
 #we use a set, put all numbers in
 #for every number, we try to look for number - 1, if its not in set
-#current number is a starting point of a sequence, we then continue the sequence to get the length
+#current number is a starting point of a sequence, we then continue 
+# the sequence to get the length
 # each sequence will be count the lengh only once
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:

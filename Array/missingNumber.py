@@ -7,3 +7,5 @@ class Solution:
         expectedSum =  n * (n + 1) // 2
         actualSum = sum(nums)
         return expectedSum - actualSum
+
+#practiced!

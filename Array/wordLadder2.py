@@ -2,7 +2,8 @@
 https://leetcode.com/problems/word-ladder-ii/
 
 shortst path in graph means bfs
-bfs, adjacent nodes differ only by one letter, need to find the number of levels to destination
+bfs, adjacent nodes differ only by one letter, 
+need to find the number of levels to destination
 
 we pre prosses the list such that its in following format {a*b:[adb,acb,afb]}
 so when we have a start node, we can easily find its adjacent nodes
@@ -12,6 +13,84 @@ then use dfs from end to start to produce all possiable paths
 
 
 defaultdict(<class 'list'>, {'dog': ['cog'], 'log': ['cog'], 'lot': ['log'], 'dot': ['dog'], 'hot': ['dot', 'lot'], 'hit': ['hot']})
+
+
+
+
+from collections import deque
+from collections import defaultdict
+class Solution(object):
+    def findLadders(self, beginWord, endWord, wordList):
+        wordMap = {}
+        for word in wordList:
+            for i in range(len(word)):
+                template = word[:i] + "*" + word[i+1:]
+                if template in wordMap:
+                    wordMap[template].append(word)
+                else:
+                    wordMap[template] = [word]
+
+
+        #build a parents graph, where node:[parentNode1, parentNode2]
+        parentGraph = defaultdict(set)
+        #bfs
+        #word, and current level
+        currentLevel = set([beginWord])
+        wordListSet = set(wordList)
+        while currentLevel and endWord not in parentGraph:
+            next_level = defaultdict(set)
+            for currentWord in currentLevel:
+                for i in range(len(currentWord)):
+                    template = currentWord[:i] + "*" + currentWord[i+1:]
+                    if template in wordMap:
+                        for neighborWord in wordMap[template]:
+                            if neighborWord not in parentGraph:
+                                next_level[neighborWord].add(currentWord)
+            currentLevel = next_level
+            parentGraph.update(next_level)
+
+        #print(parentGraph)
+        results = []
+        path = []
+        #start backwards from endWord
+        self.dfsRecurive(endWord, beginWord, parentGraph, path, results)
+        return results        
+
+    #
+    def dfsRecurive(self, currentWord, targetWord, parentGraph, currentPath, results):
+        currentPath.insert(0, currentWord)
+        if currentWord == targetWord:
+            #important, we must not use reference, we need the actual value
+            results.append(list(currentPath))
+        else:
+            if currentWord in parentGraph:
+                for parent in parentGraph[currentWord]:
+                    self.dfsRecurive(parent, targetWord, parentGraph, currentPath, results)
+        del currentPath[0]
+
+        hit
+
+    hot       him
+cot       hom       
+
+com
+
+
+
+#level1
+hot:hit
+him:hit
+
+#level2
+
+cot:hot
+hom:hot, him
+
+
+
+
+
+
 
 
 from string import ascii_lowercase
@@ -66,11 +145,11 @@ class Solution(object):
         # res = []
         # backtrack(res, [], beginWord)
         # return res
-        print(graph)
-        # return self.dfsIterative(beginWord, endWord, graph)
+        # print(graph)
+        # return self.  
         results = []
         path = []
-        self.dfsRecurive(beginWord, endWord, neiborsMap, path, results)
+        self.dfsRecurive(beginWord, endWord, graph, path, results)
         return results
 
 
@@ -114,3 +193,57 @@ class Solution(object):
                             results.append(path)
                         dfsStack.append((neiborWord, False))
         return results
+
+
+#practiced
+from collections import deque
+from collections import defaultdict
+class Solution(object):
+    def findLadders(self, beginWord, endWord, wordList):
+        wordMap = {}
+        for word in wordList:
+            for i in range(len(word)):
+                template = word[:i] + "*" + word[i+1:]
+                if template in wordMap:
+                    wordMap[template].append(word)
+                else:
+                    wordMap[template] = [word]
+
+
+        #build a parents graph, where node:[parentNode1, parentNode2]
+        parentGraph = defaultdict(set)
+        #bfs
+        #word, and current level
+        currentLevel = set([beginWord])
+        wordListSet = set(wordList)
+        while currentLevel and endWord not in parentGraph:
+            next_level = defaultdict(set)
+            for currentWord in currentLevel:
+                for i in range(len(currentWord)):
+                    template = currentWord[:i] + "*" + currentWord[i+1:]
+                    if template in wordMap:
+                        for neighborWord in wordMap[template]:
+                            if neighborWord not in parentGraph:
+                                next_level[neighborWord].add(currentWord)
+            currentLevel = next_level
+            parentGraph.update(next_level)
+
+        #print(parentGraph)
+        results = []
+        path = []
+        self.dfsRecurive(endWord, beginWord, parentGraph, path, results)
+        return results        
+
+    #
+    def dfsRecurive(self, currentWord, targetWord, parentGraph, currentPath, results):
+        currentPath.insert(0, currentWord)
+        if currentWord == targetWord:
+            #important, we must not use reference, we need the actual value
+            results.append(list(currentPath))
+        else:
+            if currentWord in parentGraph:
+                for parent in parentGraph[currentWord]:
+                    self.dfsRecurive(parent, targetWord, parentGraph, currentPath, results)
+        del currentPath[0]
+
+

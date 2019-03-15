@@ -2,9 +2,11 @@ https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-charac
 
 
 #sliding window, 2 pointers
-for maximum, we increase the start index to shrink the window as long as its invalid to get a max valid window
+for maximum, we increase the start index to shrink the window 
+as long as its invalid to get a max valid window
 
-if for minimum, we increase the start index to shrink the window as long as its valid to get a min valid window
+if for minimum, we increase the start index to shrink the window 
+as long as its valid to get a min valid window
 
 
 class Solution:

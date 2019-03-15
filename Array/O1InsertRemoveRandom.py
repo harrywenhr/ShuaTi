@@ -27,3 +27,4 @@ class RandomizedSet(object):
             
     def getRandom(self):
         return random.choice(self.nums)
+#practiced

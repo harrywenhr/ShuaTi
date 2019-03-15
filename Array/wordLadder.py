@@ -13,7 +13,8 @@ You may assume beginWord and endWord are non-empty and are not the same.
 
 
 shortst path in graph means bfs
-bfs, adjacent nodes differ only by one letter, need to find the number of levels to destination
+bfs, adjacent nodes differ only by one letter, need to find the number 
+of levels to destination
 
 we pre prosses the list such that its in following format {a*b:[adb,acb,afb]}
 so when we have a start node, we can easily find its adjacent nodes
@@ -57,4 +58,37 @@ class Solution:
                                 return currentLevel + 1
                             bfsQueue.append([word, currentLevel + 1])
         return 0
+
+#practiced
+from collections import deque
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        wordMap = {}
+        for word in wordList:
+            for i in range(len(word)):
+                template = word[:i] + "*" + word[i+1:]
+                if template in wordMap:
+                    wordMap[template].append(word)
+                else:
+                    wordMap[template] = [word]
+        #bfs
+        #word, and current level
+        bfsQ = deque([[beginWord, 1]])
+        visited = set()
+        while bfsQ:
+            currentItem = bfsQ.popleft()
+            currentWord = currentItem[0]
+            currentLevel = currentItem[1]
+            visited.add(currentWord)
+            if currentWord == endWord:
+                return currentLevel
+            for i in range(len(currentWord)):
+                template = currentWord[:i] + "*" + currentWord[i+1:]
+                if template in wordMap:
+                    for neighborWord in wordMap[template]:
+                        if neighborWord not in visited:
+                            bfsQ.append([neighborWord, currentLevel + 1])
+        return 0
+
+
 
