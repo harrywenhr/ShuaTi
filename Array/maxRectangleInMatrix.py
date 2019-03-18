@@ -6,7 +6,7 @@
 # We then will find the largest rectangle
 
 class Solution:
-    #O(N^3)
+    #O(N^2)
     def maximalRectangle(self, matrix: 'List[List[str]]') -> 'int':
         if len(matrix) == 0:
             return 0
