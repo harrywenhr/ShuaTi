@@ -1,19 +1,5 @@
 https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
 
-class Solution:
-    def canPartitionKSubsets(self, nums, k):
-        nums.sort(reverse=True) # Game Changer 1
-        buck, kSum = [0] * k, sum(nums) // k
-        def dfs(idx):
-            if idx == len(nums): return len(set(buck)) == 1
-            for i in range(k):
-                buck[i] += nums[idx]
-                if buck[i] <= kSum and dfs(idx + 1): return True
-                buck[i] -= nums[idx]
-                if buck[i] == 0: break # Game Changer 2
-            return False
-        return dfs(0)
-        
 
 # The key is, bucket[i] == 0 means for all j > i, sum[j] == 0; because this algorithm always fill the previous buckets before trying the next.
 # So if by putting nums[i] in this empty bucket can't solve the game, putting nums[i] on other empty buckets can't solve the game either.

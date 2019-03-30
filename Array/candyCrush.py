@@ -19,6 +19,7 @@ class Solution:
             for j in range(n):
                 for i in range(2,m):
                     if board[i][j] and board[i][j]==board[i-1][j]==board[i-2][j]:
+                        #add crushed positions to candy set
                         candy|={(i,j),(i-1,j),(i-2,j)}
             if not candy: break
             for crushed in candy:

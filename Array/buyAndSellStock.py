@@ -63,9 +63,12 @@ https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
 
 DP[i][j] represents the max profit until day j with at most i transactions,
 
-if no transaction on day j, then no transaction subtracted from i, DP[i][j] = DP[i][j - 1](which is also the initialization)
-if transaction happens on day j, then one transaction is subtracted from i, let's denote the day to buy as k,
+if no transaction on day j, then no transaction subtracted from i, 
+DP[i][j] = DP[i][j - 1](which is also the initialization)
+if transaction happens on day j, then one transaction is subtracted 
+from i, let's denote the day to buy as k,
 DP[i][j] = prices[j] - prices[k] + DP[i - 1][k - 1](k = 0: j -1)
+#either we do transaction at day j or we dont
 then DP[i][j] = max(DP[i][j - 1], prices[j] - prices[k] + DP[i - 1][k - 1](k = 0: j - 1))
 if(i == 0 || j == 0) DP[i][j] = 0;
 
@@ -85,6 +88,8 @@ class Solution:
         #number of transactins
         for i in range(1, maxTransaction + 1):
             #we use this to save max(dpTable[i - 1][x - 1] - prices[x])
+            #as for a constant i, this value is only depended on x, which is from 0 to j - 1
+            #we record the current max as x increases
             prevMax = -sys.maxsize
             #days
             for j in range(1, len(prices)):

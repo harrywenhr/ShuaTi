@@ -6,8 +6,10 @@ https://leetcode.com/problems/3sum/
 #      Check sum of arr[i], arr[l], arr[r] is
 #      zero or not if sum is zero then print the
 #      triplet and do l++ and r--.
-#      if the number is the same as the number before, we have used it as target already, continue.
-#      we need to move the left and right pointers to the next different numbers, so we do not get repeating result.
+#      if the number is the same as the number before, 
+#.     we have used it as target already, continue.
+#      we need to move the left and right pointers to the 
+#.     next different numbers, so we do not get repeating result.
 
 # 5. If sum is less than zero then l++
 # 6. If sum is greater than zero then r--

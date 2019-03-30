@@ -2,7 +2,7 @@ https://leetcode.com/problems/word-search-ii/
 #Make pref fix tree, space complexity O(26 * m*n) m = number of words, 
 #n = word length
 #the dfs, check within bounds in neighbor search
-#check if next leaf is # before go in for neibors
+#check if next leaf is #(end char) before go in for neibors
 # continue for neibors even if we have a match, aaa, aaab
 #if no dup allowed in results, remove end of word mark once a word is found
 #
@@ -39,7 +39,7 @@ class Solution:
                 if (newRow, newColumn) not in visited:
                     self.helper(board, newRow, newColumn, currentTrieLevel[letter], results, newPath, visited)
         visited.remove((row, column))
-
+    #dics of dics
     def makeTrie(self, words):
         rootLevel = {}
         for word in words:
